@@ -18,4 +18,15 @@ console.log('hello world!')`)
     const actual = execSync(`echo '${text}' | node index.js`).toString()
     expect(actual).to.include('hello world');
   })
+
+  it('-1 in case of error', function(done) {
+    try {
+      const text = `$$INCLUDE:not-exist.js`
+      execSync(`echo '${text}' | node index.js`).toString()
+    } catch(e) {
+      expect(e.status).eql(1)
+      expect(e.stderr.toString()).eql('file not-exist.js isn\'t exist')
+      done()
+    }
+  })
 })

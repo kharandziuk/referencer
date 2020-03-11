@@ -9,7 +9,14 @@ const referencer = (text) => {
         return line
       } else {
         const filename = line.split('$$INCLUDE:')[1]
-        const content = fs.readFileSync(filename)
+        let content
+        try {
+          content = fs.readFileSync(filename)
+        } catch(err) {
+          if (err.code !== 'ENOENT') { throw err }
+          throw Error(`file ${filename} isn't exist`)
+        }
+ 
         return content
       }
     })

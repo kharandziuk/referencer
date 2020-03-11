@@ -55,3 +55,9 @@ The actual implementation should like this now:
 ```
 $$INCLUDE:./index.js
 ```
+
+Works for now, but let's also cover a case when provide a broken reference:
+```
+$$INCLUDE:./test/referencer.spec.js
+```
+
