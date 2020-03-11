@@ -28,4 +28,30 @@ So, let's create a node.js package and write a small test with mocha.
 ```
 $$INCLUDE:./test/referencer.spec.js
 ```
+This tests perfectly serves the purpose of showing the idea and being a prototype, but we need somehow make a tool from it.
+I really like the idea behing \*nix tools, they are small, addresed, easy to use and extend. So, let's try to distribute out solution in a form of command-line tool:
 
+```
+cat article.md | node index.js
+```
+
+Most of the command line tools
+- handle stdin and produce stdout
+- return 0 exit code in a case of success
+- return non-0 exit code in a case of error
+- write in strerr in a case of error
+
+Let's add small integrational test to show our intentions:
+
+```
+$$INCLUDE:./test/referencer.spec.js
+```
+
+I like integrational tests because they:
+- check the exact behaviour of the app
+- easily cover large parts of codebase for small price
+
+The actual implementation should like this now:
+```
+$$INCLUDE:./index.js
+```

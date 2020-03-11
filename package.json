@@ -1,6 +1,6 @@
 {
   "name": "referencer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A small tool which simplify inling code samples into the text",
   "main": "index.js",
   "scripts": {

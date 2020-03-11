@@ -1,4 +1,6 @@
 const fs = require('fs')
+const stream = require('stream')
+const { promisify } = require('util')
 
 const referencer = (text) => {
   return text.split('\n')
@@ -14,4 +16,34 @@ const referencer = (text) => {
     .join('\n').trim()
 }
 
-module.exports = referencer
+const _finished = promisify(stream.finished)
+
+const asPromise = (readable) => {
+    // TODO: rewrite with _finished
+    // TODO: what if it s not an array?
+    const result = []
+    const w = new stream.Writable({
+      write(chunk, encoding, callback) {
+        result.push(chunk)
+        callback()
+      }
+    })
+    readable.pipe(w)
+    return new Promise((resolve, reject) => {
+      _finished(w).then(resolve).catch(reject)
+      readable.on('error', (err) => {
+        reject(err)
+      })
+    }).then(() => result.join(''))
+}
+
+if (require.main === module) {
+  asPromise(process.stdin)
+    .then(txt => process.stdout.write(referencer(txt)))
+    .catch(err => {
+        process.stderr.write(err.message)
+        process.exit(1)
+    })
+} else {
+  module.exports = referencer
+}
