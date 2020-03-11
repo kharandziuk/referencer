@@ -25,7 +25,9 @@ console.log('hello world!')`)
       execSync(`echo '${text}' | node index.js`).toString()
     } catch(e) {
       expect(e.status).eql(1)
-      expect(e.stderr.toString()).eql('file not-exist.js isn\'t exist')
+      expect(e.stderr.toString()).eql(
+        'file not-exist.js from $$INCLUDE:not-exist.js isn\'t exist'
+      )
       done()
     }
   })

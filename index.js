@@ -14,7 +14,7 @@ const referencer = (text) => {
           content = fs.readFileSync(filename)
         } catch(err) {
           if (err.code !== 'ENOENT') { throw err }
-          throw Error(`file ${filename} isn't exist`)
+          throw Error(`file ${filename} from ${line} isn't exist`)
         }
  
         return content

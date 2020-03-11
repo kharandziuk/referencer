@@ -4,7 +4,8 @@
   "description": "A small tool which simplify inling code samples into the text",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "cat article.md | node index.js"
   },
   "repository": {
     "type": "git",

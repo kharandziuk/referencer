@@ -61,3 +61,6 @@ Works for now, but let's also cover a case when provide a broken reference:
 $$INCLUDE:./test/referencer.spec.js
 ```
 
+And now we should be able to run the tool over this article.
+
+
