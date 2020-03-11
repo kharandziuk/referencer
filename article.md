@@ -29,4 +29,3 @@ So, let's create a node.js package and write a small test with mocha.
 $$INCLUDE:./test/referencer.spec.js
 ```
 
-
