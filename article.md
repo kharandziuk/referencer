@@ -12,26 +12,26 @@ So, we just need a tool to refence some code inside of markdown.
 
 On high lever I want to have something which turning:
 
-```
-the simpest javascript code looks like:
+```javscript
+#the simpest javascript code looks like:
 $$INCLUDE:./artifacts/hello.js
 ```
 into:
 
-```
-the simpest javascript code looks like:
+```javascript
+simpest javascript code looks like:
 $$INCLUDE:./artifacts/hello.js
 ```
 
 So, let's create a node.js package and write a small test with mocha.
 
-```
+```javascript
 $$INCLUDE:./test/referencer.spec.js
 ```
 This tests perfectly serves the purpose of showing the idea and being a prototype, but we need somehow make a tool from it.
 I really like the idea behing \*nix tools, they are small, addresed, easy to use and extend. So, let's try to distribute out solution in a form of command-line tool:
 
-```
+```sh
 cat article.md | node index.js
 ```
 
@@ -43,7 +43,7 @@ Most of the command line tools
 
 Let's add small integrational test to show our intentions:
 
-```
+```javascript
 $$INCLUDE:./test/referencer.spec.js
 ```
 
@@ -52,12 +52,12 @@ I like integrational tests because they:
 - easily cover large parts of codebase for small price
 
 The actual implementation should like this now:
-```
+```javascript
 $$INCLUDE:./index.js
 ```
 
 Works for now, but let's also cover a case when provide a broken reference:
-```
+```javascript
 $$INCLUDE:./test/referencer.spec.js
 ```
 
@@ -65,7 +65,7 @@ And now we should be able to run the tool over this article. Something like:
 ```
 cat article.md | node index.js
 ```
-and I works!
+and It works!
 
 Except only one minor issue: we need to add a way to ignore the substitution for our first example.
 But let's do it in the next article.

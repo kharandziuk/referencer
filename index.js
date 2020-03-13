@@ -2,13 +2,15 @@ const fs = require('fs')
 const stream = require('stream')
 const { promisify } = require('util')
 
+const INCLUDE_TEMPLATE = '$$INCLUDE:'
+
 const referencer = (text) => {
   return text.split('\n')
     .map(line => {
-      if(!line.includes('$$INCLUDE:')) {
+      if(!line.includes(INCLUDE_TEMPLATE)) {
         return line
       } else {
-        const filename = line.split('$$INCLUDE:')[1]
+        const filename = line.split(INCLUDE_TEMPLATE)[1]
         let content
         try {
           content = fs.readFileSync(filename)
