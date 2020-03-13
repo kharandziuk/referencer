@@ -9,6 +9,8 @@ const referencer = (text) => {
     .map(line => {
       if(!line.includes(INCLUDE_TEMPLATE)) {
         return line
+      } else if(line.includes(INCLUDE_TEMPLATE+INCLUDE_TEMPLATE)) {
+        return line.replace(INCLUDE_TEMPLATE, '')
       } else {
         const filename = line.split(INCLUDE_TEMPLATE)[1]
         let content

@@ -12,22 +12,22 @@ So, we just need a tool to refence some code inside of markdown.
 
 On high lever I want to have something which turning:
 
-```
-the simpest javascript code looks like:
+```javscript
+#the simpest javascript code looks like:
 console.log('hello world!')
 
 ```
 into:
 
-```
-the simpest javascript code looks like:
+```javascript
+simpest javascript code looks like:
 console.log('hello world!')
 
 ```
 
 So, let's create a node.js package and write a small test with mocha.
 
-```
+```javascript
 const { expect } = require('chai')
 const { execSync } = require('child_process');
 
@@ -40,6 +40,15 @@ describe('refencer', function() {
     expect(referencer(text)).eql(
 `the simpest javascript code looks like:
 console.log('hello world!')`)
+  })
+
+  it('should be able to ignore include', async function() {
+    const text = `I can ignore
+    $$INCLUDE:$$INCLUDE:./artifacts/hello.js`
+    expect(referencer(text)).eql(
+      `I can ignore
+    $$INCLUDE:./artifacts/hello.js`
+    )
   })
 
   it('is a cmd line tool', async function() {
@@ -67,7 +76,7 @@ console.log('hello world!')`)
 This tests perfectly serves the purpose of showing the idea and being a prototype, but we need somehow make a tool from it.
 I really like the idea behing \*nix tools, they are small, addresed, easy to use and extend. So, let's try to distribute out solution in a form of command-line tool:
 
-```
+```sh
 cat article.md | node index.js
 ```
 
@@ -79,7 +88,7 @@ Most of the command line tools
 
 Let's add small integrational test to show our intentions:
 
-```
+```javascript
 const { expect } = require('chai')
 const { execSync } = require('child_process');
 
@@ -92,6 +101,15 @@ describe('refencer', function() {
     expect(referencer(text)).eql(
 `the simpest javascript code looks like:
 console.log('hello world!')`)
+  })
+
+  it('should be able to ignore include', async function() {
+    const text = `I can ignore
+    $$INCLUDE:$$INCLUDE:./artifacts/hello.js`
+    expect(referencer(text)).eql(
+      `I can ignore
+    $$INCLUDE:./artifacts/hello.js`
+    )
   })
 
   it('is a cmd line tool', async function() {
@@ -122,18 +140,22 @@ I like integrational tests because they:
 - easily cover large parts of codebase for small price
 
 The actual implementation should like this now:
-```
+```javascript
 const fs = require('fs')
 const stream = require('stream')
 const { promisify } = require('util')
 
+const INCLUDE_TEMPLATE = '$$INCLUDE:'
+
 const referencer = (text) => {
   return text.split('\n')
     .map(line => {
-      if(!line.includes('$$INCLUDE:')) {
+      if(!line.includes(INCLUDE_TEMPLATE)) {
         return line
+      } else if(line.includes(INCLUDE_TEMPLATE+INCLUDE_TEMPLATE)) {
+        return line.replace(INCLUDE_TEMPLATE, '')
       } else {
-        const filename = line.split('$$INCLUDE:')[1]
+        const filename = line.split(INCLUDE_TEMPLATE)[1]
         let content
         try {
           content = fs.readFileSync(filename)
@@ -183,7 +205,7 @@ if (require.main === module) {
 ```
 
 Works for now, but let's also cover a case when provide a broken reference:
-```
+```javascript
 const { expect } = require('chai')
 const { execSync } = require('child_process');
 
@@ -196,6 +218,15 @@ describe('refencer', function() {
     expect(referencer(text)).eql(
 `the simpest javascript code looks like:
 console.log('hello world!')`)
+  })
+
+  it('should be able to ignore include', async function() {
+    const text = `I can ignore
+    $$INCLUDE:$$INCLUDE:./artifacts/hello.js`
+    expect(referencer(text)).eql(
+      `I can ignore
+    $$INCLUDE:./artifacts/hello.js`
+    )
   })
 
   it('is a cmd line tool', async function() {
@@ -225,7 +256,7 @@ And now we should be able to run the tool over this article. Something like:
 ```
 cat article.md | node index.js
 ```
-and I works!
+and It works!
 
 Except only one minor issue: we need to add a way to ignore the substitution for our first example.
 But let's do it in the next article.

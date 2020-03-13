@@ -12,6 +12,15 @@ describe('refencer', function() {
 console.log('hello world!')`)
   })
 
+  it('should be able to ignore include', async function() {
+    const text = `I can ignore
+    $$INCLUDE:$$INCLUDE:./artifacts/hello.js`
+    expect(referencer(text)).eql(
+      `I can ignore
+    $$INCLUDE:./artifacts/hello.js`
+    )
+  })
+
   it('is a cmd line tool', async function() {
     const text = `the simpest javascript code looks like:
     $$INCLUDE:./artifacts/hello.js`
