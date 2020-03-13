@@ -14,13 +14,13 @@ On high lever I want to have something which turning:
 
 ```
 the simpest javascript code looks like:
-$$INCLUDE:$$INCLUDE:hello.js
+$$INCLUDE:./artifacts/hello.js
 ```
 into:
 
 ```
 the simpest javascript code looks like:
-$$INCLUDE:hello.js
+$$INCLUDE:./artifacts/hello.js
 ```
 
 So, let's create a node.js package and write a small test with mocha.
@@ -61,6 +61,11 @@ Works for now, but let's also cover a case when provide a broken reference:
 $$INCLUDE:./test/referencer.spec.js
 ```
 
-And now we should be able to run the tool over this article.
+And now we should be able to run the tool over this article. Something like:
+```
+cat article.md | node index.js
+```
+and I works!
 
-
+Except only one minor issue: we need to add a way to ignore the substitution for our first example.
+But let's do it in the next article.
