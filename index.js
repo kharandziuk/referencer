@@ -12,15 +12,30 @@ const referencer = (text) => {
       } else if(line.includes(INCLUDE_TEMPLATE+INCLUDE_TEMPLATE)) {
         return line.replace(INCLUDE_TEMPLATE, '')
       } else {
-        const filename = line.split(INCLUDE_TEMPLATE)[1]
+        const parts = line
+          .split(INCLUDE_TEMPLATE)[1]
+          .split(':')
         let content
-        try {
-          content = fs.readFileSync(filename)
-        } catch(err) {
-          if (err.code !== 'ENOENT') { throw err }
-          throw Error(`file ${filename} from ${line} isn't exist`)
+        if (parts.length === 1) {
+          const [filename] = parts
+          try {
+            content = fs.readFileSync(filename)
+          } catch(err) {
+            if (err.code !== 'ENOENT') { throw err }
+            throw Error(`file ${filename} from ${line} isn't exist`)
+          }
+        } else if (parts.length === 3) {
+          const [filename, firstLine, lastLine] = parts
+          try {
+            content = fs.readFileSync(filename).toString()
+            content = content.split('\n').slice(firstLine - 1, lastLine).join('\n')
+          } catch(err) {
+            if (err.code !== 'ENOENT') { throw err }
+            throw Error(`file ${filename} from ${line} isn't exist`)
+          }
+        } else {
+          throw Error(`${line} is badly formated`)
         }
- 
         return content
       }
     })

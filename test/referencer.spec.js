@@ -41,7 +41,7 @@ console.log('hello world!')`)
     }
   })
 
-  it('includes some lines', function(done) {
+  it('includes some lines', function() {
     const text = `2-3 is
     $$INCLUDE:./artifacts/123.js:2:3`
     expect(referencer(text)).eql(
@@ -51,7 +51,7 @@ console.log('3')`
     )
   })
 
-  it('includes the first line', function(done) {
+  it('includes the first line', function() {
     const text = `1 is
     $$INCLUDE:./artifacts/123.js:1:1`
     expect(referencer(text)).eql(
@@ -60,7 +60,7 @@ console.log('1')`
     )
   })
 
-  it('includes the last line', function(done) {
+  it('includes the last line', function() {
     const text = `3 is
     $$INCLUDE:./artifacts/123.js:3:3`
     expect(referencer(text)).eql(

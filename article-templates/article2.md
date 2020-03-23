@@ -35,4 +35,10 @@ and let's cover some edge cases
 $$INCLUDE:./test/referencer.spec.js:54:70
 ```
 
-If you run the tests now they will brake(as expected). So, let's try to implement the actual logic:
+If you run the tests now they will brake(as expected). So, let's try to implement the actual logic with some quich and dirty solution:
+
+```javascript
+$$INCLUDE:./test/referencer.spec.js:19:40
+```
+
+now all the tests should be green.
