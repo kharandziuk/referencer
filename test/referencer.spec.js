@@ -40,4 +40,32 @@ console.log('hello world!')`)
       done()
     }
   })
+
+  it('includes some lines', function(done) {
+    const text = `2-3 is
+    $$INCLUDE:./artifacts/123.js:2:3`
+    expect(referencer(text)).eql(
+`2-3 is
+console.log('2')
+console.log('3')`
+    )
+  })
+
+  it('includes the first line', function(done) {
+    const text = `1 is
+    $$INCLUDE:./artifacts/123.js:1:1`
+    expect(referencer(text)).eql(
+`1 is
+console.log('1')`
+    )
+  })
+
+  it('includes the last line', function(done) {
+    const text = `3 is
+    $$INCLUDE:./artifacts/123.js:3:3`
+    expect(referencer(text)).eql(
+`3 is
+console.log('3')`
+    )
+  })
 })
